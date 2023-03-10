@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "测试",
+  "version": "1.0",
+  "description": "描述",
+  "action": {
+    "default_popup": "html/popup.html"
+  },
+  "permissions": ["contextMenus", "storage", "tabs"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["js/jquery-3.6.3.js", "js/content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "background": {
+    "service_worker": "js/background.js",
+    "type": "module"
+  }
+}
