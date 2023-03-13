@@ -8,3 +8,5 @@ Google extension of Everything(www.voidtools.com)
 ```
 http_server_header=Access-Control-Allow-Origin: *
 ```
+
+HTTP服务配置用户名密码后，前端请求需要加上Authorization请求头，会触发options请求，判定跨域失败，只能不配置用户名密码来绕过该问题。

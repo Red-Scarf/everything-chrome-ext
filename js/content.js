@@ -14,22 +14,15 @@ chrome.runtime.onMessage.addListener((request) => {
 function searchEverything(str) {
     let keyArr = exposeStr(str);
     let url = _getUrl();
-    url += '&search=' + keyArr.join('+');
-    // $.get(url, function (data) {
-    //     console.log('返回结果:', data);
-    // }).fail(function (error) {
-    //     console.error('请求错误:', error);
-    // });
+    // url += '&search=' + ;
     $.ajax({
         url: url,
         type: "GET",
-        crossDomain: true, //允许跨域请求
-        headers: {
-            // "Authorization": "Basic " + btoa("red:scard"),
+        data: {
+            'c': 5, // 限制5条
+            'j': 1, // json返回
+            search: keyArr.join('+'),
         },
-        // data: {
-        //     search: "your-search-keyword"
-        // },
         success: function (data) {
             console.log('返回结果 success:', data);
         },
@@ -40,7 +33,8 @@ function searchEverything(str) {
 }
 
 function _getUrl(baseUrl, params) {
-    if (!baseUrl) baseUrl = 'http://127.0.0.1:3310';
+    if (!baseUrl) baseUrl = 'http://172.17.208.1:3310';
+    return baseUrl;
     if (!params) {
         params = {
             'c': 5, // 限制5条
