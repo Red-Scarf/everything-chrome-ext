@@ -13,7 +13,9 @@ chrome.runtime.onMessage.addListener((request) => {
 
 function searchEverything(str) {
     let keyArr = exposeStr(str);
-    let url = _getUrl();
+    _getUrl();
+    let url = 'http://172.17.208.1:3310';
+    let params = _getParams();
     // url += '&search=' + ;
     $.ajax({
         url: url,
@@ -32,21 +34,20 @@ function searchEverything(str) {
     });
 }
 
-function _getUrl(baseUrl, params) {
-    if (!baseUrl) baseUrl = 'http://172.17.208.1:3310';
-    return baseUrl;
-    if (!params) {
-        params = {
-            'c': 5, // 限制5条
-            'j': 1, // json返回
-        };
-    }
-    let paramsStr = [];
-    for (const key in params) {
-        paramsStr.push(key + '=' + params[key]);
-    }
-    paramsStr = paramsStr.join('&');
-    return baseUrl + '/?' + paramsStr;
+// 获取参数信息
+function _getParams() {
+    //
+}
+
+// 获取服务地址
+function _getUrl() {
+    // TODO 如何只在一处地方配置默认参数
+    console.log('获取服务地址11');
+    $.getJSON('../config.json', (data) => {
+        console.log('获取服务地址22', data);
+    });
+    // let baseUrl = 'http://172.17.208.1:3310';
+    // return baseUrl;
 }
 
 // 分解关键字

@@ -3,32 +3,25 @@ const defaultConfig = {
 	baseUrl: 'http://127.0.0.1'
 }
 $(function () {
-	// 获取storage中保存的设置数据并进行回显
-	chrome.storage.sync.get("limitLogsNum").then((data) => {
-		let limitNum = 3;
-		if (data?.limitLogsNum) {
-			limitNum = data.limitLogsNum;
+	let urlText = $('input[name=url]');
+	// 保存按钮
+	$('#save').click(() => {
+		let url = urlText.val();
+		console.log('保存按钮 url', url);
+		chrome.storage.local.set({ 'baseUrl': url })
+	})
+	console.log($('.option'));
+	// 配置的回车事件
+	$('.option').keyup((event) => {
+		if (event.keyCode == 13) {
+			$('#save').trigger("click");
 		}
-		const radioList = $(".option>.radio");
-		if (radioList) {
-			for (let radio of radioList) {
-				const text = radio.innerText;
-				if (text.substr(0, text.length - 1) == limitNum) {
-					radio.childNodes[1].checked = true;
-					break;
-				}
-			}
-			// 监听单选框修改事件
-			for (let radio of radioList) {
-				radio.addEventListener("click", (e) => {
-					// storage中保存用户修改的选项设置
-					if (e.target.checked) {
-						chrome.storage.sync.set({
-							limitLogsNum: Number(e.target.value) || 3,
-						});
-					}
-				});
-			}
-		}
-	});
-});
+	})
+	// 展示配置信息
+	chrome.storage.local.get('baseUrl').then((result) => {
+		console.log('获取本地配置信息', result);
+		let url = defaultConfig.baseUrl;
+		if (result['baseUrl']) url = result['baseUrl'];
+		urlText.val(url);
+	})
+})

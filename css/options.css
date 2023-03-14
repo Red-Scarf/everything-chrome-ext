@@ -1,5 +1,5 @@
 body {
-  width: 300px;
+  width: 400px;
   height: 200px;
 }
 
@@ -17,9 +17,14 @@ body {
   display: flex;
   align-items: center;
   font-size: 15px;
+  margin-bottom: 10px;
 }
 
-.option > .radio {
-  margin-right: 20px;
-  cursor: pointer;
+.textfield>input {
+  margin-left: 10px;
+  /* cursor: pointer; */
+}
+
+.savebutton {
+  float: right;
 }
