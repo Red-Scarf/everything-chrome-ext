@@ -14,15 +14,27 @@ body {
 }
 
 .option {
-  display: flex;
+  /* display: flex; */
   align-items: center;
   font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.textfield {
   margin-bottom: 10px;
 }
 
 .textfield>input {
   margin-left: 10px;
   /* cursor: pointer; */
+}
+
+.largetext>span {
+  vertical-align: text-top;
+}
+
+.largetext>textarea {
+  vertical-align: text-top;
 }
 
 .savebutton {

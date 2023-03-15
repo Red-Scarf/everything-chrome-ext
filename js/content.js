@@ -1,7 +1,8 @@
-chrome.runtime.onMessage.addListener((request) => {
-    console.log("接收到background消息：", request);
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    console.log("接收到消息：", request);
     if (request.todo == "searchFilm") {
         searchEverything(request.data);
+        sendResponse('测试返回数据');
     }
 
     // 在content_scripts中只能使用部分API，所以将输入的内容交给background页面处理
@@ -11,43 +12,30 @@ chrome.runtime.onMessage.addListener((request) => {
     // });
 });
 
+// 请求everything服务
 function searchEverything(str) {
     let keyArr = exposeStr(str);
-    _getUrl();
-    let url = 'http://172.17.208.1:3310';
-    let params = _getParams();
-    // url += '&search=' + ;
-    $.ajax({
-        url: url,
-        type: "GET",
-        data: {
-            'c': 5, // 限制5条
-            'j': 1, // json返回
-            search: keyArr.join('+'),
-        },
-        success: function (data) {
-            console.log('返回结果 success:', data);
-        },
-        error: function (data) {
-            console.log('返回结果 failure:', data);
-        }
-    });
-}
 
-// 获取参数信息
-function _getParams() {
-    //
-}
-
-// 获取服务地址
-function _getUrl() {
-    // TODO 如何只在一处地方配置默认参数
-    console.log('获取服务地址11');
-    $.getJSON('../config.json', (data) => {
-        console.log('获取服务地址22', data);
-    });
-    // let baseUrl = 'http://172.17.208.1:3310';
-    // return baseUrl;
+    chrome.storage.local.get(['baseUrl', 'params']).then((result) => {
+        let defaultConfig = $.defaultConfig();
+        // 获取本地配置信息或者默认配置
+        url = defaultConfig.baseUrl;
+        if (result['baseUrl']) url = result['baseUrl'];
+        params = defaultConfig.params;
+        if (result['params']) params = result['params'];
+        params['search'] = keyArr.join('+');
+        $.ajax({
+            url: url,
+            type: "GET",
+            data: params,
+            success: function (data) {
+                console.log('返回结果 success:', data);
+            },
+            error: function (data) {
+                console.log('返回结果 failure:', data);
+            }
+        });
+    })
 }
 
 // 分解关键字

@@ -19,17 +19,19 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     console.log('tab', tab);
     if (info.menuItemId == 'searchFilm') {
         // info.selectionText // 选中的文本名称
-        let response = chrome.tabs.sendMessage(tab.id, {
+        let res = chrome.tabs.sendMessage(tab.id, {
             todo: 'searchFilm',
             data: info.selectionText, // 文本
+        }, (response) => {
+            console.log('sendMessage 的返回结果 response', response);
         });
-        console.log('response', response);
+        console.log('res', res);
     }
 });
+
 // 监听content_scripts页面发来的消息
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log("接收到content_scripts消息：", request);
     if (request.todo === "returnSearch") {
     }
 });
-
