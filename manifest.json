@@ -10,8 +10,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["js/jquery-3.6.3.js", "js/content.js", "js/config.js"],
-      "run_at": "document_start"
+      "js": ["js/jquery-3.6.3.js", "js/content.js", "js/config.js", "js/searchCard.js"]
     }
   ],
   "background": {
