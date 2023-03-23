@@ -12,6 +12,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     // });
 });
 
+mouseX = 0;
+mouseY = 0;
+// 获取鼠标位置
+document.addEventListener('mouseup', (ev) => {
+    console.log('点击鼠标', ev);
+    // 鼠标右键
+    if (ev.button == 2) {
+        mouseX = ev.pageX;
+        mouseY = ev.pageY;
+    } else {
+        // cardObj.disable();
+    }
+});
+
 // 请求everything服务
 function searchEverything(str) {
     let keyArr = exposeStr(str);
@@ -23,13 +37,17 @@ function searchEverything(str) {
         if (result['baseUrl']) url = result['baseUrl'];
         params = defaultConfig.params;
         if (result['params']) params = result['params'];
-        params['search'] = keyArr.join('+');
+        url += '?search=' + keyArr.join('+');
         $.ajax({
             url: url,
             type: "GET",
             data: params,
             success: function (data) {
                 console.log('返回结果 success:', data);
+                // 展示数据
+                cardObj.enable();
+                cardObj.updateCursor(mouseX + 120, mouseY - 20);
+                cardObj.updateContent(data.results);
             },
             error: function (data) {
                 console.log('返回结果 failure:', data);
@@ -45,6 +63,6 @@ function exposeStr(str) {
     if (keyArr.length > 1) return keyArr;
 
     // 没有分隔符的，根据英文和数值分组
-    keyArr = str.match(/[a-zA-Z]+|\d+/g);
+    keyArr = str.match(/([\u4e00-\u9fa5]+)|([a-zA-Z]+)|(\d+)/g);
     return keyArr;
 }

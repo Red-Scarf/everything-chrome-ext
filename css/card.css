@@ -1,0 +1,33 @@
+.card {
+    position: fixed;
+    width: 300px;
+    background-color: white;
+    border: 1px solid black;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    color: black;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    cursor: pointer;
+}
+
+.card-header h2 {
+    margin: 0;
+}
+
+.card-content {
+    margin: 10px 20px 20px 20px;
+}
+
+.close-button {
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
