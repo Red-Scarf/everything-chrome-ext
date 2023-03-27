@@ -1,4 +1,4 @@
-.card {
+.mySearchCard {
     position: fixed;
     width: 300px;
     background-color: white;
@@ -7,7 +7,7 @@
     color: black;
 }
 
-.card-header {
+.mySearchCard-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -15,11 +15,11 @@
     cursor: pointer;
 }
 
-.card-header h2 {
+.mySearchCard-header h2 {
     margin: 0;
 }
 
-.card-content {
+.mySearchCard-content {
     margin: 10px 20px 20px 20px;
 }
 

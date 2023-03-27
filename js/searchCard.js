@@ -1,11 +1,11 @@
 function cardHtml(data) {
     return `
-        <div class="card">
-            <div class="card-header">
+        <div class="mySearchCard">
+            <div class="mySearchCard-header">
                 <h2>标题</h2>
                 <button class="close-button">&times;</button>
             </div>
-            <div class="card-content">
+            <div class="mySearchCard-content">
                 <table>
                     <tr>
                         <th>文件名</th>
