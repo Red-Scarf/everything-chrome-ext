@@ -1,14 +1,14 @@
 const urlTextObj = $('input[name=url]');
 const paramsObj = $('textarea[name=params]');
-const defaultConfig = $.defaultConfig();
+const config = defaultConfig();
 // 保存配置
 function saveOptions() {
-	let url = defaultConfig.baseUrl;
-	let params = defaultConfig.params;
+	let url = config.baseUrl;
+	let params = config.params;
 	if (urlTextObj.val()) {
 		url = urlTextObj.val();
 	} else {
-		urlTextObj.val(defaultConfig.baseUrl);
+		urlTextObj.val(config.baseUrl);
 	}
 	if (paramsObj.val()) {
 		params = $.parseJSON(paramsObj.val()); // 字符串转成对象直接保存
@@ -22,11 +22,11 @@ function saveOptions() {
 function restoreOptions() {
 	chrome.storage.local.get(['baseUrl', 'params']).then((result) => {
 		// 默认url
-		let url = defaultConfig.baseUrl;
+		let url = config.baseUrl;
 		if (result['baseUrl']) url = result['baseUrl'];
 		urlTextObj.val(url);
 		// 默认额外参数
-		let params = defaultConfig.params;
+		let params = config.params;
 		if (result['params']) {
 			params = result['params'];
 		}

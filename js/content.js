@@ -3,6 +3,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.todo == "searchFilm") {
         searchEverything(request.data);
         sendResponse('测试返回数据');
+    } else if (request.todo == "showCard") {
+        // 展示卡片
+        cardObj.enable();
+        cardObj.updateCursor(mouseX + 120, mouseY - 20);
+        cardObj.updateContent(request.data);
     }
 
     // 在content_scripts中只能使用部分API，所以将输入的内容交给background页面处理
@@ -31,11 +36,11 @@ function searchEverything(str) {
     let keyArr = exposeStr(str);
 
     chrome.storage.local.get(['baseUrl', 'params']).then((result) => {
-        let defaultConfig = $.defaultConfig();
+        let config = defaultConfig();
         // 获取本地配置信息或者默认配置
-        url = defaultConfig.baseUrl;
+        url = config.baseUrl;
         if (result['baseUrl']) url = result['baseUrl'];
-        params = defaultConfig.params;
+        params = config.params;
         if (result['params']) params = result['params'];
         url += '?search=' + keyArr.join('+');
         $.ajax({

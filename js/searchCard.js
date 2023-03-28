@@ -2,7 +2,7 @@ function cardHtml(data) {
     return `
         <div class="mySearchCard">
             <div class="mySearchCard-header">
-                <h2>标题</h2>
+                <h2>搜索结果</h2>
                 <button class="close-button">&times;</button>
             </div>
             <div class="mySearchCard-content">
@@ -82,7 +82,7 @@ Card.prototype.updateCursor = function (cursorX, cursorY) {
 
 // 更新内容
 Card.prototype.updateContent = function (records) {
-    let content = this.el.querySelector('.card-content');
+    let content = this.el.querySelector('.mySearchCard-content');
     content.innerHTML = null;
     // 清空原有数据再展示
     if (records) {
@@ -95,7 +95,7 @@ Card.prototype.updateContent = function (records) {
         let table = `<table><tr><th>文件名</th><th>大小</th></tr>${tableLine}</table>`;
         content.innerHTML = table;
     } else {
-        content.innerHTML = `没有结果`; 
+        content.innerHTML = `没有结果`;
     }
 }
 
@@ -107,7 +107,7 @@ Card.prototype.moveCard = function (deltaX, deltaY) {
 }
 
 cardObj = new Card();
-cardHeader = cardObj.el.querySelector('.card-header');
+cardHeader = cardObj.el.querySelector('.mySearchCard-header');
 closeButton = cardObj.el.querySelector('.close-button');
 // 拖拽功能
 // 鼠标按住
