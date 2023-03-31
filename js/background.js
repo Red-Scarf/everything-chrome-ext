@@ -2,7 +2,7 @@ importScripts('./config.js');
 
 // 创建上下文菜单
 const contextMenus = [
-    { id: "searchFilm", title: "搜索影片", matchUrl: ["<all_urls>"] },
+    { id: "searchFilm", title: "搜索影片", matchUrl: ["https://*.javdb.com/*"] },
 ];
 for (let menu of contextMenus) {
     chrome.contextMenus.create({
@@ -17,15 +17,6 @@ for (let menu of contextMenus) {
 // 监听菜单按钮点击事件
 chrome.contextMenus.onClicked.addListener((info, tab) => {
     if (info.menuItemId == 'searchFilm') {
-        // info.selectionText // 选中的文本名称
-        // let res = chrome.tabs.sendMessage(tab.id, {
-        //     todo: 'searchFilm',
-        //     data: info.selectionText, // 文本
-        // }, (response) => {
-        //     // console.log('sendMessage 的返回结果 response', response);
-        // });
-
-        console.log('请求everything服务1');
         let keyArr = exposeStr(info.selectionText);
         chrome.storage.local.get(['baseUrl', 'params']).then((result) => {
             let config = defaultConfig();
@@ -46,10 +37,10 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
                 }
                 throw new Error('Network response was not ok.');
             }).then(data => {
-                console.log('data', data);
+                // 发送到content中进行结果的展示
                 let res = chrome.tabs.sendMessage(tab.id, {
                     todo: 'showCard', // 展示结果
-                    data: data.results, // 文本
+                    data: data.results,
                 }, (response) => {
                     // console.log('sendMessage 的返回结果 response', response);
                 });
@@ -61,10 +52,10 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 });
 
 // 监听content_scripts页面发来的消息
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.todo === "returnSearch") {
-    }
-});
+// chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+//     if (request.todo === "returnSearch") {
+//     }
+// });
 
 // 分解关键字
 function exposeStr(str) {
