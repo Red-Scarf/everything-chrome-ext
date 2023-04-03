@@ -9,7 +9,7 @@
 	"permissions": ["contextMenus", "storage", "tabs"],
 	"content_scripts": [
 		{
-			"matches": ["https://*.javdb.com/*"],
+			"matches": ["<all_urls>"],
 			"js": [
 				"js/jquery-3.6.3.js",
 				"js/content.js",

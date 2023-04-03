@@ -32,10 +32,8 @@ function Card() {
     this.el = document.createElement('div');
     this.el.style.position = 'absolute'; // 位置绝对值
     this.el.style.display = 'none'; // 默认隐藏
+    this.el.style['z-index'] = 999; // 顶层
     this.el.innerHTML = cardHtml(this.data);
-    this.el.addEventListener('transitionend', () => {
-        this.updateCursor(this.cursorX, this.cursorY); // CSS动画过渡完毕后更新位置
-    })
 
     this.disable();
     document.body.appendChild(this.el);
@@ -59,6 +57,7 @@ Card.prototype.updateCursor = function (cursorX, cursorY) {
     this.cursorX = cursorX;
     this.cursorY = cursorY;
 
+    // console.log('mySearchCard', this.el.querySelector('.mySearchCard'));
     if (this.el) {
         let width = this.el.scrollWidth;
         let height = this.el.scrollHeight;

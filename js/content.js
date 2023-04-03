@@ -5,8 +5,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     } else if (request.todo == "showCard") {
         // 展示卡片
         cardObj.enable();
-        cardObj.updateCursor(mouseX, mouseY);
         cardObj.updateContent(request.data);
+        cardObj.updateCursor(mouseX, mouseY);
         sendResponse('showCard 测试返回数据');
     }
 

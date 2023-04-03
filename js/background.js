@@ -2,7 +2,7 @@ importScripts('./config.js');
 
 // 创建上下文菜单
 const contextMenus = [
-    { id: "searchFilm", title: "搜索影片", matchUrl: ["https://*.javdb.com/*"] },
+    { id: "searchFilm", title: "搜索影片", matchUrl: ["<all_urls>"] },
 ];
 for (let menu of contextMenus) {
     chrome.contextMenus.create({
