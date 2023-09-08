@@ -25,6 +25,20 @@ function cardHtml(data) {
     `;
 }
 
+//格式化文件大小
+function renderSize(value) {
+    if (null == value || value == '') {
+        return "0 Bytes";
+    }
+    var unitArr = new Array("Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB");
+    var index = 0;
+    var srcsize = parseFloat(value);
+    index = Math.floor(Math.log(srcsize) / Math.log(1024));
+    var size = srcsize / Math.pow(1024, index);
+    size = size.toFixed(2); // 保留的小数位数
+    return size + unitArr[index];
+}
+
 function Card() {
     this.data = {};
     this.cursorX = 0;
@@ -95,7 +109,8 @@ Card.prototype.updateContent = function (records) {
         let tableLine = '';
         for (let index = 0; index < records.length; index++) {
             let element = records[index];
-            tableLine += `<tr><td>${element['name']}</td><td>${element['size']}</td></tr>`;
+            let sizeStr = renderSize(element['size'])
+            tableLine += `<tr><td>${element['name']}</td><td>${sizeStr}</td></tr>`;
         }
         let table = `<table><tr><th>文件名</th><th>大小</th></tr>${tableLine}</table>`;
         content.innerHTML = table;
