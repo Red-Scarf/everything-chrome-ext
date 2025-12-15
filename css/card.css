@@ -1,3 +1,18 @@
+table {
+    /* 关键：合并边框 */
+    border-collapse: collapse;
+    width: 100%;
+}
+
+tr {
+    /* 每行底部一条横线 */
+    border-bottom: 1px solid #ccc;
+}
+
+td {
+    padding: 8px;
+}
+
 .mySearchCard {
     position: fixed;
     width: 400px;
