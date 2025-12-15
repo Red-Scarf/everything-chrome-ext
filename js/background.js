@@ -42,7 +42,11 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
                     todo: 'showCard', // 展示结果
                     data: data.results,
                 }, (response) => {
-                    // console.log('sendMessage 的返回结果 response', response);
+                    if (chrome.runtime.lastError) {
+                        console.warn("接收端不存在或未响应:", chrome.runtime.lastError.message);
+                    } else {
+                        console.log("收到响应:", response);
+                    }
                 });
             }).catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
