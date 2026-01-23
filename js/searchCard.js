@@ -119,6 +119,12 @@ Card.prototype.updateContent = function (records) {
     }
 }
 
+// 显示加载中
+Card.prototype.showLoading = function () {
+    let content = this.el.querySelector('.mySearchCard-content');
+    content.innerHTML = `<div style="text-align: center; padding: 20px;">正在搜索...</div>`;
+}
+
 cardObj = new Card();
 cardHeader = cardObj.el.querySelector('.mySearchCard-header');
 // 定义变量，记录鼠标按下时的坐标
