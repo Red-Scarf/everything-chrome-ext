@@ -1,0 +1,173 @@
+/* Everything 扩展的现代卡片样式 */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+.mySearchCard {
+    position: fixed;
+    width: 450px;
+    max-height: 600px;
+    display: flex;
+    flex-direction: column;
+
+    /* 现代玻璃拟态 / 深色主题 */
+    background-color: rgba(30, 30, 35, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(0, 0, 0, 0.2);
+
+    color: #e0e0e0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    z-index: 2147483647;
+    /* 确保在最顶层 */
+    overflow: hidden;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+
+    /* 重置继承 */
+    line-height: 1.5;
+    text-align: left;
+}
+
+/* 头部区域 */
+.mySearchCard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: linear-gradient(to right, #2c3e50, #34495e);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: move;
+    /* 拖拽光标 */
+    user-select: none;
+}
+
+.mySearchCard-header h2 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+.close-button {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    /* 稍大一点 */
+    font-family: Arial, sans-serif;
+    /* 更标准的 X 对齐 */
+    line-height: 1;
+    transition: all 0.2s;
+    padding: 0 0 2px 0;
+    /* 视觉补偿以上移 */
+}
+
+.close-button:hover {
+    background: rgba(255, 80, 80, 0.8);
+    /* transform: scale(1.1); 已移除以保持对齐稳定 */
+}
+
+/* 内容区域 */
+.mySearchCard-content {
+    padding: 0;
+    overflow-y: auto;
+    max-height: 500px;
+
+    /* 滚动条样式 */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.mySearchCard-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.mySearchCard-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.mySearchCard-content::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+}
+
+/* 表格样式 */
+.mySearchCard table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.mySearchCard th {
+    text-align: left;
+    padding: 10px 16px;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #9aa0a6;
+    font-weight: 500;
+    font-size: 12px;
+    text-transform: uppercase;
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(5px);
+}
+
+.mySearchCard td {
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: #d1d5db;
+    word-break: break-all;
+}
+
+/* 行悬停效果 */
+.mySearchCard tr:hover td {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* 文件大小列 */
+.mySearchCard td:last-child,
+.mySearchCard th:last-child {
+    text-align: right;
+    white-space: nowrap;
+    width: 80px;
+    color: #8ab4f8;
+    /* 数字强调色 */
+    font-feature-settings: "tnum";
+}
+
+/* 空状态 */
+.mySearchCard-content>div {
+    color: #9aa0a6;
+    font-style: italic;
+}
+
+/* 本地资源角标 */
+.local-badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    /* 翠绿色 */
+    color: #ffffff;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+    z-index: 20;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+    letter-spacing: 0.5px;
+    font-family: system-ui, -apple-system, sans-serif;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
