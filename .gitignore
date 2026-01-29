@@ -33,5 +33,4 @@ dist/
 .tsbuildinfo
 
 # docs (for testing and setup guides)
-/doc
 /target-page
