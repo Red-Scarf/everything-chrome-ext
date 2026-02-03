@@ -102,6 +102,28 @@ git push origin --tags
 - **描述**：包含构建信息、安装说明和更新日志链接
 - **附件**：打包好的 `.zip` 文件
 
+### 验证文件上传到 Release
+
+创建 Release 后，按以下步骤验证：
+
+1. **访问 GitHub Release 页面**：
+   - 在仓库首页，点击右侧的 **"Releases"** 链接
+   - 或直接访问：`https://github.com/你的用户名/仓库名/releases`
+
+2. **检查 Release 列表**：
+   - 应该能看到新创建的 Release（例如：`v1.0.1`）
+   - 点击 Release 标题进入详情页
+
+3. **验证附件文件**：
+   - 在 Release 详情页底部，应该能看到 **"Assets"** 部分
+   - 应该包含一个 `.zip` 文件（例如：`everything-chrome-ext-v1.0.1.zip`）
+   - 文件大小应该大于 0，可以点击下载
+
+4. **如果文件未出现**：
+   - 检查 Actions 运行日志，查看是否有错误
+   - 确认打包步骤是否成功执行
+   - 查看 "Find package file" 步骤的输出，确认文件路径是否正确
+
 ### 版本号规范
 
 建议遵循 [语义化版本](https://semver.org/lang/zh-CN/)：
@@ -175,9 +197,24 @@ on:
 **问题**：Release 创建成功，但没有附件文件
 
 **解决方案**：
-1. 检查 `npm run package` 命令是否成功执行
-2. 确认打包文件路径是否正确（通常在项目根目录）
-3. 检查工作流中的文件查找逻辑
+1. **检查打包命令**：确认 `npm run package` 命令是否成功执行
+2. **查看文件列表**：工作流中的 "List files after packaging" 步骤会显示所有 zip 文件位置
+3. **确认文件路径**：
+   - Plasmo 通常将 zip 文件生成在 `build/` 目录下
+   - 工作流会自动查找 `build/*.zip`、`./*.zip` 等位置
+4. **检查文件查找逻辑**：查看 "Find package file" 步骤的输出，确认找到的文件路径
+5. **手动验证**：在本地运行 `npm run package`，确认 zip 文件的生成位置
+
+### Release 已创建但文件未上传
+
+**问题**：Release 创建成功，但 Assets 中没有文件
+
+**解决方案**：
+1. **检查文件路径**：确认 `steps.find-package.outputs.file` 的值是否正确
+2. **检查文件权限**：确认文件可读
+3. **查看 Actions 日志**：在 "Create Release" 步骤中查看详细错误信息
+4. **验证 GITHUB_TOKEN**：确认 token 有创建 Release 和上传文件的权限（通常自动配置）
+5. **检查文件大小**：确认文件不为空
 
 ### 权限问题
 

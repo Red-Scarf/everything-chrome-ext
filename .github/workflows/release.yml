@@ -34,6 +34,17 @@ jobs:
       - name: Package extension
         run: npm run package
 
+      - name: List files after packaging
+        run: |
+          echo "=== Root directory ==="
+          ls -lah *.zip 2>/dev/null || echo "No zip files in root"
+          echo ""
+          echo "=== Build directory ==="
+          ls -lah build/*.zip 2>/dev/null || echo "No zip files in build/"
+          echo ""
+          echo "=== All zip files ==="
+          find . -name "*.zip" -type f
+
       - name: Get version from package.json
         id: package-version
         run: |
@@ -53,13 +64,34 @@ jobs:
       - name: Find package file
         id: find-package
         run: |
-          PACKAGE_FILE=$(find . -name "*.zip" -type f | head -n 1)
+          # 优先查找 build 目录下的 zip 文件（Plasmo 通常在这里生成）
+          PACKAGE_FILE=$(find build -name "*.zip" -type f 2>/dev/null | head -n 1)
+          
+          # 如果没找到，查找根目录
           if [ -z "$PACKAGE_FILE" ]; then
-            echo "Package file not found!"
+            PACKAGE_FILE=$(find . -maxdepth 1 -name "*.zip" -type f | head -n 1)
+          fi
+          
+          # 如果还是没找到，全局查找
+          if [ -z "$PACKAGE_FILE" ]; then
+            PACKAGE_FILE=$(find . -name "*.zip" -type f | grep -v node_modules | head -n 1)
+          fi
+          
+          if [ -z "$PACKAGE_FILE" ]; then
+            echo "❌ Package file not found!"
+            echo "Searching in:"
+            echo "  - build/*.zip"
+            echo "  - ./*.zip"
+            echo "  - All zip files (excluding node_modules)"
             exit 1
           fi
+          
+          echo "✅ Found package file: $PACKAGE_FILE"
           echo "file=$PACKAGE_FILE" >> $GITHUB_OUTPUT
           echo "filename=$(basename $PACKAGE_FILE)" >> $GITHUB_OUTPUT
+          
+          # 显示文件信息
+          ls -lh "$PACKAGE_FILE"
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
@@ -75,7 +107,7 @@ jobs:
             - **工作流**: ${{ github.workflow }}
 
             ### 📥 安装说明
-            1. 下载附件中的 `.zip` 文件
+            1. 下载下方附件中的 `.zip` 文件
             2. 解压到本地目录
             3. 打开 Chrome 浏览器，访问 `chrome://extensions`
             4. 启用"开发者模式"
@@ -87,6 +119,7 @@ jobs:
           files: ${{ steps.find-package.outputs.file }}
           draft: false
           prerelease: ${{ contains(steps.tag.outputs.tag, '-') }}
+          generate_release_notes: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
