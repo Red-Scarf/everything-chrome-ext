@@ -1,0 +1,98 @@
+name: Release Extension
+
+on:
+  push:
+    tags:
+      - "v*" # 当推送以 v 开头的 tag 时触发，例如 v1.0.0
+  workflow_dispatch: # 允许手动触发
+    inputs:
+      version:
+        description: "Version tag (e.g., v1.0.0)"
+        required: true
+
+jobs:
+  build-and-package:
+    name: Build and Package Extension
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build extension
+        run: npm run build
+
+      - name: Package extension
+        run: npm run package
+
+      - name: Get version from package.json
+        id: package-version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Get tag name
+        id: tag
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "tag=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Find package file
+        id: find-package
+        run: |
+          PACKAGE_FILE=$(find . -name "*.zip" -type f | head -n 1)
+          if [ -z "$PACKAGE_FILE" ]; then
+            echo "Package file not found!"
+            exit 1
+          fi
+          echo "file=$PACKAGE_FILE" >> $GITHUB_OUTPUT
+          echo "filename=$(basename $PACKAGE_FILE)" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.tag.outputs.tag }}
+          name: Release ${{ steps.tag.outputs.tag }}
+          body: |
+            ## 🎉 Everything Chrome Extension ${{ steps.tag.outputs.tag }}
+
+            ### 📦 构建信息
+            - **构建时间**: ${{ github.event.head_commit.timestamp || github.run_started_at }}
+            - **提交**: ${{ github.sha }}
+            - **工作流**: ${{ github.workflow }}
+
+            ### 📥 安装说明
+            1. 下载附件中的 `.zip` 文件
+            2. 解压到本地目录
+            3. 打开 Chrome 浏览器，访问 `chrome://extensions`
+            4. 启用"开发者模式"
+            5. 点击"加载已解压的扩展程序"
+            6. 选择解压后的文件夹
+
+            ### 📝 更新日志
+            查看 [CHANGELOG.md](../CHANGELOG.md) 了解详细更新内容。
+          files: ${{ steps.find-package.outputs.file }}
+          draft: false
+          prerelease: ${{ contains(steps.tag.outputs.tag, '-') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: extension-package-${{ steps.tag.outputs.tag }}
+          path: ${{ steps.find-package.outputs.file }}
+          retention-days: 30
