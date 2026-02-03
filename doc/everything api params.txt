@@ -1,0 +1,135 @@
+URL 查询字符串
+
+语法：
+
+http://localhost/?s=&o=0&c=32&j=0&i=0&w=0&p=0&r=0&m=0&path_column=0&size_column=0&date_modified_column=0&date_created_column=0&attributes_column=0&sort=name&ascending=1
+key=数值对不需要时可以忽略。
+
+
+关键词：
+
+s
+
+q
+
+search
+
+搜索文本
+
+o
+
+offset
+
+显示第 nth 个结果
+
+c
+
+count
+
+返回不超过设定值的结果数
+
+j
+
+json
+
+数值非零时返回结果为 json 对象
+
+i
+
+case
+
+数值非零时匹配大小写
+
+w
+
+wholeword
+
+数值非零时匹配全字
+
+p
+
+path
+
+数值非零时搜索完整路径
+
+r
+
+regex
+
+数值非零时执行正则搜索
+
+m
+
+diacritics
+
+数值非零时匹配变音标记
+
+path_column
+
+数值非零时列举结果路径为 json 对象
+
+size_column
+
+数值非零时列举结果大小为 json 对象
+
+date_modified_column
+
+数值非零时列举结果修改日期为 json 对象
+
+date_created_column
+
+数值非零时列举结果创建日期为 json 对象
+
+attributes_column
+
+数值非零时列举结果属性为 json 对象
+
+sort
+
+排序值可以为以下任一项：
+
+排序方式	说明
+name	按名称排序。
+path	按路径排序。
+date_modified	按修改日期排序。
+size	按大小排序。
+
+ascending
+
+数值非零时升序排列
+
+
+默认 html 查询字符串值：
+
+关键词	数值
+search	
+offset	0
+count	32
+json	0
+case	0
+wholeword	0
+path	0
+regex	0
+diacritics	0
+sort	name
+ascending	1
+
+默认 json 对象查询字符串值：
+
+关键词	数值
+search	
+offset	0
+count	4294967295
+json	1
+case	0
+wholeword	0
+path	0
+regex	0
+diacritics	0
+path_column	0
+size_column	0
+date_modified_column	0
+date_created_column	0
+attributes_column	0
+sort	name
+ascending	1
