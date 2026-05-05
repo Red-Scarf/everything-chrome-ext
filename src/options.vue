@@ -33,6 +33,7 @@ const form = reactive({
   offset: 0,
   sort: "name",
   ascending: false,
+  extraSearchText: "",
   allowedSites: [] as string[],
   autoOpenCard: true
 })
@@ -82,10 +83,8 @@ watch(
 const fullUrl = computed(() => {
   const baseUrl = `${form.protocol}://${form.host}${form.port ? ":" + form.port : ""}`
   const params = new URLSearchParams()
-  params.append("search", "test")
-  params.append("j", "1")
-  
-  // 附加可视化参数
+    const previewSearch = ["test", form.extraSearchText].filter(Boolean).join(" ")
+    params.append("search", previewSearch)
   if (form.searchBehavior.i) params.append("i", "1")
   if (form.searchBehavior.w) params.append("w", "1")
   if (form.searchBehavior.r) params.append("r", "1")
@@ -140,6 +139,7 @@ onMounted(async () => {
     form.offset = config.offset
     form.sort = config.sort
     form.ascending = config.ascending
+    form.extraSearchText = config.extraSearchText || ""
     form.allowedSites = Array.isArray(config.allowedSites) ? [...config.allowedSites] : []
     form.autoOpenCard = config.autoOpenCard
     
@@ -178,6 +178,7 @@ const handleSave = async () => {
       params: {}, // 高级参数现在已融合在主对象中，或者如果需要独立存储额外参数，可以在此扩展
       searchBehavior: form.searchBehavior,
       columns: form.columns,
+      extraSearchText: form.extraSearchText,
       limit: form.limit,
       offset: form.offset,
       sort: form.sort,
@@ -379,6 +380,15 @@ const testConnection = async () => {
                   <p class="site-tip">默认仅在 javdb.com 生效。留空则代表全局生效。</p>
                 </div>
               </div>
+
+              <el-form-item label="额外搜索文本 (追加到 search 参数)">
+                <el-input
+                  v-model="form.extraSearchText"
+                  placeholder="例如：1080p 或 Blu-ray"
+                  clearable
+                />
+                <p class="option-tip">每次搜索时会与主搜索词一起拼接到 search 参数中，留空则不追加。</p>
+              </el-form-item>
 
               <div class="preview-section">
                 <span class="label">生成的测试 URL 预览</span>

@@ -61,7 +61,8 @@ const handleSearch = async () => {
       config.limit,
       config.offset,
       config.sort,
-      config.ascending
+      config.ascending,
+      config.extraSearchText
     )
     results.value = data
     serviceStatus.value = 'online'

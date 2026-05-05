@@ -92,7 +92,8 @@ export async function searchEverything(
   limit: number = 5,
   offset: number = 0,
   sort: string = "name",
-  ascending: boolean = false
+  ascending: boolean = false,
+  extraSearchText: string = ""
 ): Promise<Array<{ name: string; size: number; path?: string; date_modified?: number;[key: string]: any }>> {
   // 构建综合参数
   const fullParams = { ...extraParams }
@@ -118,7 +119,8 @@ export async function searchEverything(
   fullParams.ascending = ascending ? "1" : "0"
   fullParams.j = "1" // 强制开启 JSON
 
-  const url = buildSearchUrl(baseUrl, searchText, fullParams)
+  const mergedSearchText = [searchText.trim(), extraSearchText.trim()].filter(Boolean).join(" ")
+  const url = buildSearchUrl(baseUrl, mergedSearchText, fullParams)
   console.log("Searching Everything:", url)
 
   try {

@@ -41,7 +41,9 @@ export const getDefaultConfig = () => ({
   // 增加：允许运行的站点列表
   allowedSites: ["javdb.com"],
   // 增加：自动打开页内弹窗控制
-  autoOpenCard: true
+  autoOpenCard: true,
+  // 增加：额外搜索文本，每次搜索时追加到 search 参数
+  extraSearchText: ""
 })
 
 /**
@@ -65,7 +67,8 @@ export async function getConfig() {
     "ascending",
     "columns",
     "allowedSites",
-    "autoOpenCard"
+    "autoOpenCard",
+    "extraSearchText"
   ])
 
   let protocol = result.protocol || defaultConfig.protocol
@@ -97,6 +100,7 @@ export async function getConfig() {
 
   // 处理自动打开设置
   const autoOpenCard = typeof result.autoOpenCard !== 'undefined' ? result.autoOpenCard : defaultConfig.autoOpenCard
+  const extraSearchText = typeof result.extraSearchText === 'string' ? result.extraSearchText : defaultConfig.extraSearchText
 
   return {
     protocol,
@@ -108,6 +112,7 @@ export async function getConfig() {
     columns,
     allowedSites,
     autoOpenCard,
+    extraSearchText,
     limit: typeof result.limit !== 'undefined' ? result.limit : defaultConfig.limit,
     offset: typeof result.offset !== 'undefined' ? result.offset : defaultConfig.offset,
     sort: result.sort || defaultConfig.sort,
@@ -127,6 +132,7 @@ export async function saveConfig(config: {
   columns?: Record<string, boolean>
   allowedSites?: string[]
   autoOpenCard?: boolean
+  extraSearchText?: string
   limit?: number
   offset?: number
   sort?: string
@@ -148,6 +154,7 @@ export async function saveConfig(config: {
   if (config.columns) data.columns = config.columns
   if (Array.isArray(config.allowedSites)) data.allowedSites = config.allowedSites
   if (typeof config.autoOpenCard !== 'undefined') data.autoOpenCard = config.autoOpenCard
+  if (typeof config.extraSearchText !== 'undefined') data.extraSearchText = config.extraSearchText
   if (typeof config.limit !== 'undefined') data.limit = config.limit
   if (typeof config.offset !== 'undefined') data.offset = config.offset
   if (config.sort) data.sort = config.sort

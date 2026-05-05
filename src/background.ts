@@ -20,7 +20,14 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
       const results = await searchEverything(
         info.selectionText || "",
         config.baseUrl,
-        config.params
+        config.params,
+        config.searchBehavior,
+        config.columns,
+        config.limit,
+        config.offset,
+        config.sort,
+        config.ascending,
+        config.extraSearchText
       )
 
       // 发送结果给内容脚本

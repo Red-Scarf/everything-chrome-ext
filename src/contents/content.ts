@@ -80,7 +80,11 @@ async function performSearch(searchText: string) {
       config.params,
       config.searchBehavior,
       config.columns,
-      config.limit
+      config.limit,
+      config.offset,
+      config.sort,
+      config.ascending,
+      config.extraSearchText
     )
 
     // 显示结果
@@ -136,7 +140,11 @@ async function injectJavDbButtons(config: any) {
           config.params,
           config.searchBehavior,
           config.columns,
-          1 // 只需要知道有没有，限制 1 条即可
+          1, // 只需要知道有没有，限制 1 条即可
+          0,
+          "name",
+          false,
+          config.extraSearchText
         )
         if (results && results.length > 0) {
           searchBtn.classList.remove("is-info")
@@ -267,7 +275,11 @@ async function batchCheckLocalMovies(config: any) {
           config.params,
           config.searchBehavior,
           config.columns,
-          config.limit
+          config.limit,
+          config.offset,
+          config.sort,
+          config.ascending,
+          config.extraSearchText
         )
         if (results && results.length > 0) {
           addLocalBadge(item, results.length, results, code)
